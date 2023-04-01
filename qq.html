@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>QQ聊天界面</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #chat-window {
+            width: 400px;
+            height: 600px;
+            border: 1px solid gray;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        #message-container {
+            position: fixed;
+            bottom: 0;
+            height: 120px;
+            width: 400px;
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            height: 100%;
+            margin-right: 10px;
+            resize: none;
+            box-sizing: border-box;
+            border: 1px solid gray;
+            padding: 5px;
+            font-family: sans-serif;
+        }
+
+        #send-button {
+            height: 100%;
+            min-width: 80px;
+            background-color: dodgerblue;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .message {
+            background-color: dodgerblue;
+            color: white;
+            padding: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            max-width: 80%;
+            align-self: flex-end;
+        }
+
+        /* 隐藏滚动条 */
+        #chat-window::-webkit-scrollbar {
+            width: 0;
+        }
+
+        /* 显示滚动条 */
+        #chat-window:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+<div id="chat-window"></div>
+
+<div id="message-container">
+    <textarea id="message-input" placeholder="请输入消息"></textarea>
+    <button id="send-button">发送</button>
+</div>
+
+<script>
+    const chatWindow = document.querySelector('#chat-window');
+    const messageInput = document.querySelector('#message-input');
+    const sendButton = document.querySelector('#send-button');
+
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (messageText) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.textContent = messageText;
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            messageInput.value = '';
+        }
+    }
+
+    sendButton.addEventListener('click', sendMessage);
+
+    messageInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+</script>
+</body>
+</html>
