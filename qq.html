@@ -1,113 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>QQ聊天界面</title>
-	<style type="text/css">
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #f4f4f4;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-		}
-		.chat-box {
-			width: 400px;
-			height: 600px;
-			border: 1px solid #ccc;
-			box-sizing: border-box;
-			padding: 10px;
-			overflow-y: scroll;
-			scrollbar-width: none;
-		}
-		.chat-box::-webkit-scrollbar {
-			display: none;
-		}
-		.message {
-			margin-bottom: 10px;
-			color: #fff;
-			background-color: skyblue;
-			padding: 5px;
-			border-radius: 5px;
-			word-wrap: break-word;
-			max-width: 80%;
-		}
-		.input-container {
-			height: 120px;
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background-color: #fff;
-			padding: 10px;
-			box-sizing: border-box;
-			display: flex;
-			align-items: center;
-		}
-		.input-box {
-			flex-grow: 1;
-			resize: none;
-			height: 100%;
-			padding: 5px;
-			box-sizing: border-box;
-			border: none;
-			font-size: 16px;
-		}
-		.send-btn {
-			margin-left: 10px;
-			padding: 5px 10px;
-			background-color: skyblue;
-			color: #fff;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 16px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>QQ聊天界面</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #chat-window {
+            width: 400px;
+            height: 600px;
+            border: 1px solid gray;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        #message-container {
+            position: fixed;
+            bottom: 0;
+            height: 120px;
+            width: 400px;
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            height: 100%;
+            margin-right: 10px;
+            resize: none;
+            box-sizing: border-box;
+            border: 1px solid gray;
+            padding: 5px;
+            font-family: sans-serif;
+        }
+
+        #send-button {
+            height: 100%;
+            min-width: 80px;
+            background-color: dodgerblue;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .message {
+            background-color: dodgerblue;
+            color: white;
+            padding: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            max-width: 80%;
+            align-self: flex-end;
+        }
+    </style>
 </head>
+
 <body>
-	<div class="chat-box">
-		<div class="message">这是一条消息。</div>
-	</div>
-	<div class="input-container">
-		<textarea class="input-box"></textarea>
-		<button class="send-btn">发送</button>
-	</div>
-	<script type="text/javascript">
-		var chatBox = document.querySelector('.chat-box');
-		var inputBox = document.querySelector('.input-box');
-		var sendBtn = document.querySelector('.send-btn');
+<div id="chat-window"></div>
 
-		sendBtn.addEventListener('click', function() {
-			var message = inputBox.value.trim();
-			if (message !== '') {
-				var newMessage = document.createElement('div');
-				newMessage.className = 'message';
-				newMessage.textContent = message;
-				chatBox.appendChild(newMessage);
-				chatBox.scrollTop = chatBox.scrollHeight;
-				inputBox.value = '';
-			}
-		});
+<div id="message-container">
+    <textarea id="message-input" placeholder="请输入消息"></textarea>
+    <button id="send-button">发送</button>
+</div>
 
-		inputBox.addEventListener('keydown', function(event) {
-			if (event.keyCode === 13 && !event.shiftKey) {
-				event.preventDefault();
-				sendBtn.click();
-			}
-		});
+<script>
+    const chatWindow = document.querySelector('#chat-window');
+    const messageInput = document.querySelector('#message-input');
+    const sendButton = document.querySelector('#send-button');
 
-		chatBox.addEventListener('mouseenter', function() {
-			chatBox.style.overflowY = 'scroll';
-			chatBox.style.scrollbarWidth = 'thin';
-		});
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (messageText) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.textContent = messageText;
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            messageInput.value = '';
+        }
+    }
 
-		chatBox.addEventListener('mouseleave', function() {
-			chatBox.style.overflowY = 'hidden';
-			chatBox.style.scrollbarWidth = 'none';
-		});
-	</script>
+    sendButton.addEventListener('click', sendMessage);
+
+    messageInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+</script>
 </body>
 </html>
